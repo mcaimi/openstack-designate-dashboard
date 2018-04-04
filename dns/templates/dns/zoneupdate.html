@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Update DNS Zone" %}{% endblock %}
+
+{% block main %}
+    {% include 'project/dns/_zoneupdate.html' %}
+{% endblock %}

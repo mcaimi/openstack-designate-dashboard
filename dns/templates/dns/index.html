@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "DNS as a Service" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_domain_page_header.html" with title=page_title %}
+{% endblock page_header %}
+
+{% block main %}
+    {{ table.render }}
+    <p/>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">DNS as a Service Dashboard</h3>
+      </div>
+      <div class="panel-body">This dashboard lets you manage the DNS Zones and Recordsets inside your Tenant.<p/>
+        After you create a Zone and populate it with records, you'll <b>have to delegate authority for that specific domain</b> in your organization's DNS server infrastructure.
+      </div>
+    </div>
+    <p/>
+ 
+{% endblock %}

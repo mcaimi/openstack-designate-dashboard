@@ -1,0 +1,32 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block modal-header %}
+<h2>Update DNS Zone</h2>
+    <p/>
+    <p/><p/>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">DNS Resolution Caveats.</h3>
+      </div>
+      <div class="panel-body"><h4>Recordsets in new zones are not resolvable from the public internet by default. You need to forward authority delegation from your organization's own DNS infrastructure.</h4></div>
+    </div>
+    <p/>
+
+{% endblock %}
+
+{% block modal-body-right %}
+    <h3>{% trans "Zone Update Help" %}</h3>
+    <p>{% trans "Update information for this zone. This zone is ACTIVE, so you'll need to wait for propagation. I you change the zone name, you'll need to also update all delegations." %}</p>
+    <p>{% trans "Please fill in all information required. Valid Zone Names must end with a '.' character." %}</p>
+    <p>{% trans "A valid e-mail address is also required as the registrar contact information. This will show in all dig queries to the DNS master server for this zone." %}</p>
+    <script type="text/javascript">
+        if (typeof horizon.user !== 'undefined') {
+            horizon.user.init();
+        } else {
+            addHorizonLoadEvent(function () {
+                horizon.user.init();
+            });
+        }
+    </script>
+{% endblock %}

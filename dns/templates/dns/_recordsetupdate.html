@@ -1,0 +1,30 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block modal-header %}
+<h2>Update Record</h2>
+    <p/>
+    <p/><p/>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">DNS Resolution Caveats.</h3>
+      </div>
+      <div class="panel-body"><h4>Recordsets in new zones are not resolvable from the public internet by default. You need to forward authority delegation from your organization's own DNS infrastructure.</h4></div>
+    </div>
+    <p/>
+
+{% endblock %}
+
+{% block modal-body-right %}
+    <h3>{% trans "DNS Record Update Help" %}</h3>
+    <p>{% trans "Please fill in all information required." %}</p>
+    <script type="text/javascript">
+        if (typeof horizon.user !== 'undefined') {
+            horizon.user.init();
+        } else {
+            addHorizonLoadEvent(function () {
+                horizon.user.init();
+            });
+        }
+    </script>
+{% endblock %}

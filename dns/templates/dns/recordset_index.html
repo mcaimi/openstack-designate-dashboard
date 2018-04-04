@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Active Record Sets" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_domain_page_header.html" with title=page_title %}
+{% endblock page_header %}
+
+{% block main %}
+    {{ table.render }}
+    <p/>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">DNS as a Service Dashboard</h3>
+      </div>
+      <div class="panel-body">This dashboard lets you manage Recordsets created in the current zone, inside your Tenant.<p/>
+      </div>
+    </div>
+    <p/>
+ 
+{% endblock %}
