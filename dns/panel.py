@@ -18,7 +18,7 @@ from openstack_dashboard.dashboards.project import dashboard
 
 
 class DesignateDNSPanel(horizon.Panel):
-    name = _("DNS (BETA)")
+    name = _("DNS")
     slug = "dns"
 
 

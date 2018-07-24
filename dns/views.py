@@ -59,7 +59,7 @@ class RecordSetsIndexView(tables.DataTableView):
 class IndexView(tables.DataTableView):
     table_class = dns_tables.DNSZonesTable
     template_name = 'project/dns/index.html'
-    page_title = _("DNS (BETA)")
+    page_title = _("DNSaaS")
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
