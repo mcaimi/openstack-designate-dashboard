@@ -15,11 +15,13 @@
 
 import logging
 from keystoneauth1.identity import v2 as v2_plugin
+from keystoneauth1.identity import v3 as v3_plugin
 from keystoneauth1 import session as keystone_session
 from django.conf import settings
 
 # import base api library from openstack dashboard codebase
 from openstack_dashboard.api import base as api_base
+from openstack_dashboard.api import keystone
 from horizon.utils import functions as utils
 from horizon.utils.memoized import memoized
 
@@ -28,7 +30,7 @@ from designateclient.v2 import client as designate_client
 
 LOG = logging.getLogger(__name__)
 
-KS_VERSION = api_base.APIVersionManager("identity", preferred_version=2)
+KS_VERSION = api_base.APIVersionManager("identity", preferred_version=3)
 VERSION = api_base.APIVersionManager("dns", preferred_version=2)
 try:
     VERSION.load_supported_version(2, {"client": designate_client, "version": 2})
@@ -43,10 +45,27 @@ def logwrap_info(message):
 # wrapper around designate DNS as a service API set
 @memoized
 def designateclient(request):
-    # keystone auth object
-    auth = v2_plugin.Token(auth_url=api_base.url_for(request, 'identity'), tenant_id=request.user.tenant_id, token=request.user.token.id)
+    token = request.user.token.id
+
+    if keystone.get_version() < 3:
+        tenant_id = request.user.tenant_id
+        logwrap_info("using keystone v2.")
+        # keystone auth object
+        auth = v2_plugin.Token(auth_url="https://%s:5000/v2.0" % settings.OPENSTACK_HOST, 
+                                tenant_id=tenant_id, 
+                                token=token)
+    else:
+        project_id = request.user.project_id
+        project_domain_id = request.session.get('domain_context')
+        logwrap_info("using keystone v3.")
+        auth = v3_plugin.Token(auth_url="https://%s:5000/v3" % settings.OPENSTACK_HOST,
+                                token=token,
+                                project_id=project_id,
+                                project_domain_id=project_domain_id)
+
     # create a session
     ks_session = keystone_session.Session(auth=auth)
+
     # spawn designate client object
     dns_client = designate_client.Client(session=ks_session)
 
